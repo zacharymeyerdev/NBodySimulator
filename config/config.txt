@@ -1,0 +1,9 @@
+method = euler
+dt = 0.005
+steps = 800
+outputEvery = 5
+G = 1.0
+eps2 = 0.0001
+bodiesFile = data/bodies.csv
+outTrajFile = results/trajectories.csv
+includeEnergy = true

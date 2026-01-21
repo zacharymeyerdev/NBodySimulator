@@ -5,6 +5,7 @@
 *.slo
 *.lo
 *.o
+src/*.o
 *.obj
 
 # Precompiled Headers
@@ -30,3 +31,9 @@
 *.exe
 *.out
 *.app
+
+# Files
+NBodySimulator.exe
+trajectories.csv
+final.txt
+results/trajectories*.csv

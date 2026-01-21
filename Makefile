@@ -3,9 +3,9 @@
 # THE NAME OF YOUR PROJECT
 PROJECT = NBodySimulator
 # ALL CPP COMPILABLE IMPLEMENTATION FILES THAT MAKE UP THE PROJECT
-SRC_FILES = main.cpp simulation_config.cpp nbody_system2d.cpp body_io.cpp run_logger.cpp
+SRC_FILES = src/main.cpp src/simulation_config.cpp src/nbody_system2d.cpp src/body_io.cpp src/run_logger.cpp
 # ALL HEADER FILES THAT ARE PART OF THE PROJECT
-H_FILES = body_io.h body2d.hpp nbody_system2d.h real_type.hpp run_logger.h simulation_config.h vec2.hpp
+H_FILES = include/body_io.h include/body2d.hpp include/nbody_system2d.h include/real_type.hpp include/run_logger.h include/simulation_config.h include/vec2.hpp
 # ANY OTHER RESOURCES FILES THAT ARE PART OF THE PROJECT
 REZ_FILES = bodies.csv trajectories.csv config.txt final.txt
 # YOUR USERNAME
@@ -13,6 +13,7 @@ USERNAME = zachary_meyer
 
 # NO EDITS BELOW THIS LINE
 CXX = g++
+CXXFLAGS = -Iinclude
 CXXFLAGS_DEBUG = -g
 CXXFLAGS_WARN = -Wall -Wextra -Wconversion -Wdouble-promotion -Wunreachable-code -Wshadow -Wpedantic
 CPPVERSION = -std=c++17
@@ -63,10 +64,11 @@ $(TARGET): $(OBJECTS)
 	$(CXX) -o $@ $^ $(RPATH) -L$(LIB_PATH) $(LIBS)
 
 .cpp.o:
-	$(CXX) $(CPPVERSION) $(CXXFLAGS_DEBUG) $(CXXFLAGS_WARN) -o $@ -c $< -I$(INC_PATH)
+	$(CXX) $(CPPVERSION) $(CXXFLAGS) $(CXXFLAGS_DEBUG) $(CXXFLAGS_WARN) -o $@ -c $< -I$(INC_PATH)
 
 clean:
-	$(DEL) $(TARGET) $(OBJECTS)
+	del /F /Q $(TARGET)
+	del /F /Q src\*.o
 
 depend:
 	@sed -i.bak '/^# DEPENDENCIES/,$$d' Makefile

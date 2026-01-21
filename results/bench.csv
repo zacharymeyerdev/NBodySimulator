@@ -1,0 +1,5 @@
+N,steps,method,seconds
+10,20000,verlet,0.05
+50,20000,verlet,0.15
+100,20000,verlet,0.45
+300,20000,verlet,3.2
