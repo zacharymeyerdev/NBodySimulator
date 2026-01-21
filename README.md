@@ -37,7 +37,7 @@ Default config:
 `./NBodySimulator`
 
 Custom config file:
-`./NBodySimulator myconfig.txt`
+`./NBodySimulator config/config.txt`
 
 An SFML window will open to display the bodies’ motion. A trajectories CSV will be generated based on your config.
 
@@ -78,3 +78,43 @@ Example:
 `10,0,0,0,0`
 
 `1,100,0,0,1`
+
+---
+
+## Output CSV Format
+
+If `includeEnergy=false`, `outTrajFile` contains:
+- `t`
+- for each body `i`: `x_i,y_i,vx_i,vy_i`
+
+If `includeEnergy=true`, it additionally includes:
+- `energy`
+
+---
+
+## Results
+
+### Energy drift (Euler vs Verlet)
+
+These plots show relative energy drift over time for two integrators using the same initial conditions and timestep.
+
+---
+
+### Runtime scaling
+
+Measured wall-clock runtime for fixed `steps` and `dt`. Pairwise gravity is computed with an O(N²) force loop, so runtime increases superlinearly with N.
+
+Bench data: `results/bench.csv`  
+Plot script: `scripts/plot_bench.py`
+
+---
+
+## Project Layout
+
+- `src/` — implementation files  
+- `include/` — header files  
+- `config/` — sample configs (e.g., Euler vs Verlet)  
+- `data/` — initial conditions (`bodies.csv`)  
+- `results/` — output CSVs + benchmark table  
+- `scripts/` — plotting/analysis helpers  
+- `assets/` — images/GIFs used by this README  
