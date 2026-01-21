@@ -1,0 +1,82 @@
+TITLE
+Name: Zachary Jackson Meyer
+Section: A
+Project Title: N-Body Simulator
+
+PROBLEM DESCRIPTION
+
+This project is a Newtonian N-body simulator in 2D. Given a gravitational constant
+G, a time step dt, a total number of steps, and a set of bodies (with mass, initial position, and initial velocity)
+the program integrates their motion under mutual gravitational attraction.
+It supports three integration methods, being Euler, SemiEuler, and Verlet, to compare stability
+and accuracy. The simulator can also track the total energy of the system and show approximate energy conservation in
+a closed system. Trajectories are written to a CSV file for later analysis, and the motion is visualized in real time
+with SFML. Users can configure runs by editing a text configuration file and a bodies CSV file, which makes it easily
+to simulate different conditions and parameters. The overall goal is to study the behavior of gravitational systems while
+practicing good C++ design, file I/O, and list-based structures.
+
+PROGRAM DOCUMENTATION
+
+To run the program, unzip the project folder and navigate into from the command line
+using 'cd'. Build the project by running 'make', which complies the executable. before
+running, edit config.txt to set desired parameters such as method (euler, semieuler, or verlet), dt(more dt means better 
+calculationsbut slower simulation), steps(how long the simulator will go on for), outputEvery(how often to output trajectories), 
+G, eps2, bodiesFile, outTrajFile, and includeEnergy(true or false). The file named by bodiesFile (bodies.csv) contains one body 
+per line in the format mass,,y,vx,vy. After configuration, run the simulator with './NBodySimulator' 
+or './NBodySimulator myconfig.txt' to use a custom config file. A new CSV file with trajectories is created, and an SFML window 
+opens to display the bodies' motion. A programmer could extend upon this project by adding new integrators, merging/collision logic, 
+better SFML visual such as trails/scaling, or more configuration options such as more presets. From the original proposal, the main 
+changes are that precision cannot be changed and is now fixed via the Real typedef, which calculates everything in long double,
+and the SFML visualization was implemented.
+
+CLASS DESCRIPTION
+
+The priamry custom class is NBodySystem2D. It encapsulates the simulation state and physics, via a std::vector<Body2D>
+storing all bodies, the gravitation constant G, and the softening parameter eps2. Through its public interface,
+it allows the caller to set or query G and eps2, add bodies, compute total energy, and advance the system by one time step
+using one of three integration methods (stepEuler, stepSemiEuler, and stepVerlet). It performs O(n^2) pairwise force calculations
+with softening to avoid errors at close distances between bodies. Putting this logic into one class keeps the physics
+code separate from the file I/O, configuration parsing, and rendering, which gives a better structure and makes it easier
+to extend the physical model with touching unrelated parts of the program, implementing SOLID principles.
+
+LIST DATA STRUCTURE
+
+The main list data structure used in this project is std::vector<Body2D> stored in NBodySystem2D.
+This vector holds every body in the simulation and is iterated over with nested loops to ocmpute pairwise gravitational
+forces and to update positions and velocities. A vector was chosen because the number of bodies is fixed once
+the run begins, and random access by index is good for the double loop over i and j. Not insertions or deletions
+are needed for the simulation, so a vector is easiest. Using this structure also makes it easier to reuse the same container
+to calculate physics, compute energy, and write to the CSV, as well as drawing the bodies in the screen.
+
+FILE I/O
+
+File I/O is used in SimulationConfig, loadBodiesFromCsv, and RunLogger. Firstly, in SimulationConfig,
+it is used to read the configuration settings from config.txt or a user specified one using std::ifstream,
+parsing for key value pairs for the parameters. Secondly, loadBodiesFromCsv in body_io.hpp reads the initial
+conditions as set by the bodies.csv file, converts each line into a Body2D, and adds it to a NBodySystem2D instance.
+Lastly, RunLogger writes the simulation output to trajectories.csv with std::ofstream, writing a header row if
+necessary then appending one line per logged time step with time, positions, velocities, and total energy if selected.
+File I/O is necessary in this program because it allows the configuration/starting conditions to be read and used
+by the program, makes experimentation reproducible, and provides the data to analyze at a later date.
+
+PROJECT MODIFICATIONS
+
+Several changes were made from the original proposal, including in precision and SFML. Originally, the program would have
+included the ability for the user to choose the precision used in calculations (such as float, double, or long double) but
+it was simplified to a single Read typedef set to long double. It avoids the complexity that template induce, keeping the build
+keeps it neater, and chooses the higher precision option. The SFML visualization started as a stretch goal but was integrated
+upon completing the calculation side with time left. Bodies are now drawn in real time, with the first three being set colors 
+and the colors after being random. The focus of the project gradually shifted from building a lot of modes to go through to
+building one simulator that demonstrates N-body physics and energy behavior. These changes were made primarily to make the project
+better in detail and scope.
+
+REFLECTIONS
+
+For this project, I used the C++ concepts I've learned over this course such as classes, vectors, file I/O, and the SFML library
+to create a program based on a topic I'm interested in. I've tried physics simulators before, but not with this level of structure 
+and attention to design and documentation. Implementing and comparing different integrators and seeing how methods like Verlet 
+preserve energy was pretty satisfying. I also liked the parts like parsing configuration files and designing clearn interfaces, 
+whilst trying to find the right settings for SFML to best suit the user. If I had to do this project again, I would probably spend 
+more time up front sketching out the  design,including how all of the different parts would interact, as well as writing comments 
+while writing the code rather than doing all of it at the very end. Overall, this project let me demonstrate my new understanding 
+of simulations and C++ program structure.
