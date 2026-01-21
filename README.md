@@ -9,7 +9,10 @@ It supports multiple integrators to compare stability/accuracy:
 
 Optionally, the simulator can compute and log **total system energy** to demonstrate approximate energy conservation in a closed system. Trajectories are written to a CSV file for later analysis.
 
+![NBodySimulator](https://github.com/user-attachments/assets/bdecb851-d855-41bf-8c4b-4bf0115ab4a9)
+
 ---
+
 
 ## Features
 - 2D Newtonian gravity with softening (`eps2`) for numerical stability at close distances
